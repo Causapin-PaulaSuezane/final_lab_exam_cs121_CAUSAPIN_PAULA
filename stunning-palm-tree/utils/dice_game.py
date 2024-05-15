@@ -1,16 +1,19 @@
 import os
-import uuid
 import random
 from utils.user_manager import UserManager
 from utils.score import Score
 
-
+class Dice:
+    def roll(self):
+        return random.randint(1,6)
+    
 class DiceGame:
 	def __init__(self):
 		self.user_manager = UserManager()
 		self.scores = []
 		self.current_user = None
 		self.load_scores()
+		self.dice = Dice()
   
 	def load_scores(self):
 		if not os.path.exists('data'):
@@ -18,18 +21,19 @@ class DiceGame:
 		if not os.path.exists('data/rankings.txt'):
 			open ('data/rankings.txt', 'w').close()
 
-		with open ('data/rankings.txt', 'w') as file:
+		with open ('data/rankings.txt', 'r') as file:
 			for line in file:
-				username, game_id, points, wins = line.strip().split(',')
-				self.scores.append(Score(username, game_id, int(points), int(wins)))
+				username, points, wins = line.strip().split(',')
+				self.scores.append(Score(username, int(points), int(wins)))
 
 	def save_scores(self):
 		with open ('data/rankings.txt', 'w') as file:
 			for score in self.scores:
-				file.write (f"{score.username},{score.game_id},{score.points}, {score.wins}\n")
+				file.write (f"{score.username},{score.points}, {score.wins}\n")
 
+	
 	def play_game(self):
-		print("Best of three rounds!")
+		print("\nBest of three rounds!")
 		print("Game starting...")
 		
 		user_wins = 0
@@ -48,54 +52,57 @@ class DiceGame:
 			print(f"CPU rolled: {cpu_roll}")
    
 			if user_roll > cpu_roll:
-				print(f"{self.current_user} wins te round!")
+				print(f"\n{self.current_user} wins te round!\n")
 				user_wins += 1
 			elif user_roll < cpu_roll:
-				print(f"CPU wins the round!")
+				print(f"\nCPU wins the round!\n")
 				cpu_wins += 1
 			else:
-				print("Its a tie.")
+				print("\nIts a tie.\n")
 
 		if user_wins > cpu_wins:
 			print("\nCongrats! You won!")
-		elif user_wins < cpu_wins:
-			print ("You lost. CPU wins this game.")
-		else:
-			print("Its a tie.")
-   
-		if user_wins > cpu_wins:
 			points = 10
 			wins = 1
 		elif user_wins < cpu_wins:
+			print ("\nYou lost. CPU wins this game.")
 			points = 0
 			wins = 0
 		else:
+			print("\nIts a tie.")
 			points = 0
 			wins = 0
 	
-		game_id = str(uuid.uuid4())
-		new_score = Score(self.current_user, game_id, points, wins)
-		self.scores.append(new_score)
-		self.save_score()
-   
+		for score in self.scores:
+			if score.username == self.current_user:
+				score.points += points
+				score.wins += wins
+				break
+		else:
+			new_score = Score(self.current_user, points, wins)
+			self.scores.append(new_score)
+
+		self.save_scores()
+  
 	def show_top_scores(self):
 		print("Top 10 scores : ")
 		if not self.scores:
 			print("No scores yet.")
 			return
 		self.scores.sort(key = lambda x: x.points, reverse=True)
-		for score in self.score:
-			print(f"Username : {score.username}, Game ID : {score.game_id}, Points {score.points}, Wins {score.wins}")
+		for score in self.scores[:10]:
+			if score in self.scores[:10]:
+				print(f"Username : {score.username}, Points {score.points}, Wins {score.wins}")
 
 	def logout(self):
 		self.current_user = None
 		print("Logged out.")
 
 	def menu(self):
-		print (f"Welcome") # {username}")
+		print (f"\nWelcome {self.current_user}!!")
 		while True:
 			try:
-				print("Menu : ")
+				print("\nMenu : ")
 				print("1. Start")
 				print("2. View Rankings")
 				print("3. Log Out")
