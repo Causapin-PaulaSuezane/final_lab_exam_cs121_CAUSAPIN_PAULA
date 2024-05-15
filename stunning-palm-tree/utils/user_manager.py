@@ -28,7 +28,7 @@ class UserManager:
 		return len(password) >=8
 
 	def register(self, username, password):
-		if self.validate_username(username and self.validate_password):
+		if self.validate_username(username) and self.validate_password(password):
 			self.username[username] = password
 			self.save_users()
 			return True
@@ -36,4 +36,4 @@ class UserManager:
 
 	def login(self, username, password):
 		return self.users.get(username) == password
-		pass
+		
