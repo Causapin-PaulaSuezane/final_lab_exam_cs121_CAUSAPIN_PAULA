@@ -29,11 +29,20 @@ class UserManager:
 
 	def register(self, username, password):
 		if self.validate_username(username) and self.validate_password(password):
-			self.username[username] = password
-			self.save_users()
-			return True
-		return False
+			if username not in self.users:
+				self.users[username] = password
+				self.save_users()
+				print("User registered successfully.")
+				
+			else:
+				print("Username already exists.")
+		else:
+			print("\nInvalid. Username should be >= 4 characters, and password be >= 8 characters. ")
+       
 
 	def login(self, username, password):
-		return self.users.get(username) == password
-		
+		if username in self.users:
+			return self.users[username] == password
+		else:
+			print("Username does not exist.")
+   
