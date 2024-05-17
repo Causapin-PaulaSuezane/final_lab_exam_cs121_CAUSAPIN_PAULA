@@ -23,6 +23,7 @@ def main():
                     continue
                 if user_manager.register(username, password):
                     print("Registered successfully.")
+                    
             elif choice == "2":
                 print("\nLogin:")
                 username = input("Enter username (leave blank to cancel): ")
@@ -39,6 +40,7 @@ def main():
                     dice_game.menu()
                 else:
                     print("Invalid username or password.")
+                    
             elif choice == "3":
                 print("Exiting the game. Goodbye!")
                 break

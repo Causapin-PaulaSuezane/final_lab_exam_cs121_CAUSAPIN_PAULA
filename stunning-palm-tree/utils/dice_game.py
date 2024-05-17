@@ -90,9 +90,9 @@ class DiceGame:
 			print("No scores yet.")
 			return
 		self.scores.sort(key = lambda x: x.points, reverse=True)
-		for score in self.scores[:10]:
+		for rank, score in enumerate(self.scores[:10], start = 1):
 			if score in self.scores[:10]:
-				print(f"Username : {score.username}, Points {score.points}, Wins {score.wins}")
+				print(f"{rank}. {score.username}, Points {score.points}, Wins {score.wins}")
 
 	def logout(self):
 		self.current_user = None
