@@ -90,10 +90,9 @@ class DiceGame:
 			print("No scores yet.")
 			return
 		self.scores.sort(key = lambda x: x.points, reverse=True)
-
-		for rank, score in enumerate(self.scores[:10], start = 1):
+		for score in self.scores[:10]:
 			if score in self.scores[:10]:
-				print(f"{rank}. {score.username}, Points {score.points}, Wins {score.wins}")
+				print(f"Username : {score.username}, Points {score.points}, Wins {score.wins}")
 
 	def logout(self):
 		self.current_user = None
@@ -107,7 +106,7 @@ class DiceGame:
 				print("1. Start")
 				print("2. View Rankings")
 				print("3. Log Out")
-				choice = int(input("Enter your choice : "))
+				choice = int(input("Enter your choice, or leave blank to cancel : "))
 				if choice == 1:
 					self.play_game()
 					pass
