@@ -2,6 +2,7 @@
 from utils.user_manager import UserManager
 from utils.dice_game import DiceGame
 
+#main function
 def main():
     user_manager = UserManager()
     dice_game = DiceGame()
@@ -12,10 +13,11 @@ def main():
             print("2. Login")
             print("3. Exit")
             choice = input("\nWhat would you like to do? (1-3) : ")
-            if choice == "1":
+            
+            if choice == "1": #registration
                 print("\nRegistration:")
                 username = input("Enter username (leave blank to cancel): ")
-                if not username:  
+                if not username:  #if user entered with no any input, it'll cancel
                     print("Registration canceled.")
                     continue
                 password = input("Enter password (leave blank to cancel): ")
@@ -25,7 +27,7 @@ def main():
                 if user_manager.register(username, password):
                     print("Registered successfully.")
                     
-            elif choice == "2":
+            elif choice == "2": #login
                 print("\nLogin:")
                 username = input("Enter username (leave blank to cancel): ")
                 if not username:  
@@ -42,7 +44,7 @@ def main():
                 else:
                     print("Invalid username or password.")
                     
-            elif choice == "3":
+            elif choice == "3": #exit
                 print("Exiting the game. Goodbye!")
                 break
             else:
